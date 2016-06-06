@@ -1,6 +1,8 @@
 import process_input
+import process_unit_assignment
 
 variables = {}
+units = {}
 values = {'I' : 1,
 		  'V' : 5,
 		  'X' : 10,
@@ -16,6 +18,8 @@ user_input = raw_input("\nSo, What can I do for you today?\n\n")
 
 while True:
 	words = user_input.split()
+	var_list = []
+	error_response = ""
 	"""
 	Processable input can of three major types:
 	1. Numeric Assignment
@@ -25,9 +29,30 @@ while True:
 	type_of_input = process_input.process_input(user_input)
 	if type_of_input == "Numeric Assignment":
 		variables[words[0]] = values[words[2]]
-		print variables
+		print "Ok, fine..!!"
 	elif type_of_input ==  "Unit Assignment":
-		print type_of_input
+		#glob glob Silver is 34 Credits
+		get_input = process_unit_assignment.process_unit_assignment(words)
+		credits = get_input['credits']
+		unit_vars = get_input['vars']
+		unit_vars_length = len(unit_vars)
+		for var in unit_vars:
+			if var != unit_vars[unit_vars_length-1]:
+				if var in variables:
+					var_list.append(var)
+				else:
+					error_response = "There is no value assigned for \""+ var + "\" yet."
+					break
+			else:
+				if var in variables:
+					error_response = "Unit can not be of same name as any of the variables."
+					break
+				else:
+					units[var] = 0
+		if error_response != "":
+			print error_response
+		else:
+			print var_list
 	else:
 		print type_of_input
 	user_input = raw_input("\nWhat next?\n")
