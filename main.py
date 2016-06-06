@@ -1,15 +1,9 @@
 import process_input
 import process_unit_assignment
+import conversion
 
 variables = {}
 units = {}
-values = {'I' : 1,
-		  'V' : 5,
-		  'X' : 10,
-		  'L' : 50,
-		  'C' : 100,
-		  'D' : 500,
-		  'M' : 1000}
 #Greetings to the user
 print "\nWelcome to the Intergalactic Converter"
 
@@ -28,7 +22,7 @@ while True:
 	"""
 	type_of_input = process_input.process_input(user_input)
 	if type_of_input == "Numeric Assignment":
-		variables[words[0]] = values[words[2]]
+		variables[words[0]] = words[2]
 		print "Ok, fine..!!"
 	elif type_of_input ==  "Unit Assignment":
 		#glob glob Silver is 34 Credits
@@ -41,7 +35,7 @@ while True:
 				if var in variables:
 					var_list.append(var)
 				else:
-					error_response = "There is no value assigned for \""+ var + "\" yet."
+					error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
 					break
 			else:
 				if var in variables:
@@ -52,7 +46,11 @@ while True:
 		if error_response != "":
 			print error_response
 		else:
+			ret = conversion.variables_for_conversion(var_list, variables)
+			print ret
+			print credits
 			print var_list
+			print units
 	else:
 		print type_of_input
 	user_input = raw_input("\nWhat next?\n")
