@@ -19,7 +19,7 @@ def process_input(user_input):
 			return ("Sorry, but there is no such symbol used in the galaxy as \""+ words[length-1] +"\".\nPlease use any symbol from the below list:\nI\nV\nX\nL\nC\nD\nM")
 	elif length > 3 and words[length-1].lower() == 'credits' and words[length-2].isdigit() == True and words[length-3].lower() == 'is' :
 		return ("Unit Assignment")
-	elif length > 3 and words[length-length].lower() == 'how' and words[length-(length-1)].lower() in ('many','much') and "?" in words[length-1] and "is" in user_input.lower():
+	elif length > 3 and words[length-length].lower() == 'how' and words[length-(length-1)].lower() in ('many','much') and "?" == user_input[len(user_input)-1] and "is" in user_input.lower():
 		return ("Question")
 	else:
 		return ("I have no idea what you are talking about")
