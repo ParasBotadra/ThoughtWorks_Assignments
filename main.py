@@ -55,4 +55,4 @@ while True:
 				print ret
 	else:
 		print type_of_input
-	user_input = raw_input("\nWhat next?\n")
+	user_input = raw_input("\nWhat next I can do for you?\n")
