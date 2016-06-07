@@ -47,10 +47,12 @@ while True:
 			print error_response
 		else:
 			ret = conversion.variables_for_conversion(var_list, variables)
-			print ret
-			print credits
-			print var_list
-			print units
+			if str(ret).isdigit():
+				print ret
+				units[var] = "{0:.2f}".format(float(credits)/float(ret))
+				print units
+			else:
+				print ret
 	else:
 		print type_of_input
 	user_input = raw_input("\nWhat next?\n")
