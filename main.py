@@ -53,20 +53,48 @@ while True:
 			else:
 				print ret
 	elif type_of_input ==  "Question":
-		#how much is pish tegj glob glob ?
-		#how many Credits is glob prok Silver ?
-		get_input = process_unit_assignment.process_question(user_input)
-		if get_input['credits']:
-			pass
-		else:
-			length = len(user_input)
-			ret = conversion.variables_for_conversion(get_input['vars'], variables)
-			start = user_input.find('is') + 3
-			substr = user_input[start:length-1]
-			if str(ret).isdigit():
-				print substr.strip() + " is " + str(ret)
+		unit_val = 0.00
+		length = len(user_input)
+		start = user_input.find('is') + 3
+		substr = user_input[start:length-1]
+		if "credits" in user_input.lower():
+			for var in substr.split():
+				if var != substr.split()[len(substr.split())-1]:
+					if var in variables:
+						var_list.append(var)
+					else:
+						error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
+						break
+				else:
+					if var in units:
+						unit_val = units[var]
+					else:
+						error_response = "Sorry, there is no unit assigned for \""+ var + "\" yet."
+						break
+			if error_response != "":
+				print error_response
 			else:
-				print ret
+				ret = conversion.variables_for_conversion(var_list, variables)
+				if str(ret).isdigit():
+					output = ret * float(unit_val)
+					print substr.strip() + " is " + str(output) + " Credits"
+				else:
+					print ret
+		else:
+			for var in substr.split():
+				if var in variables:
+					var_list.append(var)
+				else:
+					error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
+					break
+			if error_response != "":
+				print error_response
+			else:
+				ret = conversion.variables_for_conversion(var_list, variables)
+				if str(ret).isdigit():
+					print substr.strip() + " is " + str(ret)
+				else:
+					print ret
 	else:
 		print type_of_input
 	user_input = raw_input("\nWhat more I can do for you?\n")
