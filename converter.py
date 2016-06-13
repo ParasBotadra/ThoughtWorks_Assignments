@@ -7,13 +7,13 @@ values = {'I' : 1,
 		  'D' : 500,
 		  'M' : 1000}
 
-def variables_for_conversion(var_list, variables):
+def earth_to_galaxy_conversion(item_list, items):
 	result_string = ""
 	i = 0
 	total = 0
 	error = ""
-	for var in var_list:
-		result_string += str(variables[var])
+	for item in item_list:
+		result_string += str(items[item])
 	if re.search('^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$',result_string)!= None:
 		str_result = len(result_string)
 		while i <= str_result-1:

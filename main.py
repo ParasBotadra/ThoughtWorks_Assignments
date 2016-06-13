@@ -1,8 +1,7 @@
 import process_input
-import process_unit_assignment
-import conversion
+import converter
 
-variables = {}
+items = {}
 units = {}
 #Greetings to the user
 print "\nWelcome to the Intergalactic Converter"
@@ -11,57 +10,50 @@ print "\nWelcome to the Intergalactic Converter"
 user_input = raw_input("\nSo, What can I do for you today?\n\n")
 
 while True:
-	words = user_input.split()
-	var_list = []
+	user_input_words = user_input.split()
+	item_list = []
 	error_response = ""
-	"""
-	Processable input can of three major types:
-	1. Numeric Assignment
-	2. Unit Assignment to the Numeric Value
-	3. Question for conversion, it can be either earth to galaxy or galaxy to earth  
-	"""
-	type_of_input = process_input.process_input(user_input)
+	type_of_input = process_input.get_type_of_input(user_input)
 	if type_of_input == "Numeric Assignment":
-		variables[words[0]] = words[2]
-		print "Ok, fine..!!"
+		items[user_input_words[0]] = user_input_words[2]
+		print "Ok, fine. I have memorize the item and its value !!"
 	elif type_of_input ==  "Unit Assignment":
-		#glob glob Silver is 34 Credits
-		get_input = process_unit_assignment.process_unit_assignment(words)
-		credits = get_input['credits']
-		unit_vars = get_input['vars']
-		unit_vars_length = len(unit_vars)
-		for var in unit_vars:
-			if var != unit_vars[unit_vars_length-1]:
-				if var in variables:
-					var_list.append(var)
+		unit_assignment_detail = process_input.get_unit_assignment_detail(user_input_words)
+		credits = unit_assignment_detail['credits']
+		unit_items = unit_assignment_detail['items']
+		unit_items_length = len(unit_items)
+		for item in unit_items:
+			if item != unit_items[unit_items_length-1]:
+				if item in items:
+					item_list.append(item)
 				else:
-					error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
+					error_response = "Sorry, there is no value assigned for \""+ item + "\" yet."
 					break
 			else:
-				if var in variables:
-					error_response = "Unit can not be of same name as any of the variables."
+				if item in items:
+					error_response = "Unit can not be of same name as any of the items."
 					break
 				else:
-					units[var] = 0
+					units[item] = 0
 		if error_response != "":
 			print error_response
 		else:
-			ret = conversion.variables_for_conversion(var_list, variables)
-			if str(ret).isdigit():
-				units[var] = "{0:.2f}".format(float(credits)/float(ret))
-				print "Thats cool !!"
+			converted_result = converter.earth_to_galaxy_conversion(item_list, items)
+			if str(converted_result).isdigit():
+				units[item] = "{0:.2f}".format(float(credits)/float(converted_result))
+				print "Thats cool. Unit has been saved in my memory !!"
 			else:
-				print ret
+				print converted_result
 	elif type_of_input ==  "Question":
 		unit_val = 0.00
-		length = len(user_input)
+		input_length = len(user_input)
 		start = user_input.find('is') + 3
 		substr = user_input[start:length-1]
 		if "credits" in user_input.lower():
 			for var in substr.split():
 				if var != substr.split()[len(substr.split())-1]:
-					if var in variables:
-						var_list.append(var)
+					if var in items:
+						item_list.append(var)
 					else:
 						error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
 						break
@@ -74,7 +66,7 @@ while True:
 			if error_response != "":
 				print error_response
 			else:
-				ret = conversion.variables_for_conversion(var_list, variables)
+				ret = conversion.variables_for_conversion(item_list, items)
 				if str(ret).isdigit():
 					output = ret * float(unit_val)
 					print substr.strip() + " is " + str(output) + " Credits"
@@ -82,15 +74,15 @@ while True:
 					print ret
 		else:
 			for var in substr.split():
-				if var in variables:
-					var_list.append(var)
+				if var in items:
+					item_list.append(var)
 				else:
 					error_response = "Sorry, there is no value assigned for \""+ var + "\" yet."
 					break
 			if error_response != "":
 				print error_response
 			else:
-				ret = conversion.variables_for_conversion(var_list, variables)
+				ret = conversion.variables_for_conversion(item_list, items)
 				if str(ret).isdigit():
 					print substr.strip() + " is " + str(ret)
 				else:
